@@ -21,25 +21,33 @@ class HomeScreen extends StatelessWidget {
             // min, max
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                color: Colors.red,
-                width: 50.0,
-                height: 50.0,
+              Flexible(
+                child: Container(
+                  color: Colors.red,
+                  width: 50.0,
+                  height: 50.0,
+                ),
               ),
-              Container(
-                color: Colors.orange,
-                width: 50.0,
-                height: 50.0,
+              Expanded(
+                child: Container(
+                  color: Colors.orange,
+                  width: 50.0,
+                  height: 50.0,
+                ),
               ),
-              Container(
-                color: Colors.yellow,
-                width: 50.0,
-                height: 50.0,
+              Expanded(
+                child: Container(
+                  color: Colors.yellow,
+                  width: 50.0,
+                  height: 50.0,
+                ),
               ),
-              Container(
-                color: Colors.green,
-                width: 50.0,
-                height: 50.0,
+              Expanded(
+                child: Container(
+                  color: Colors.green,
+                  width: 50.0,
+                  height: 50.0,
+                ),
               ),
             ],
           ),
