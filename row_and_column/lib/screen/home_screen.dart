@@ -10,7 +10,6 @@ class HomeScreen extends StatelessWidget {
         bottom: false,
         child: Container(
           color: Colors.black,
-          width: MediaQuery.of(context).size.width,
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.
             // start, end, center, spaceBetween, spaceAround, spaceEvenly
@@ -18,6 +17,9 @@ class HomeScreen extends StatelessWidget {
             // crossAxisAlignment: CrossAxisAlignment.
             // start, end, center, stretch
             crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisSize: MainAxisSize.
+            // min, max
+            mainAxisSize: MainAxisSize.max,
             children: [
               Container(
                 color: Colors.red,
