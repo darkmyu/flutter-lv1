@@ -4,7 +4,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 final homeUri = Uri.parse('https://blog.codefactory.ai');
 
 class HomeScreen extends StatelessWidget {
-  WebViewController controller = WebViewController()..loadRequest(homeUri);
+  WebViewController controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(homeUri);
 
   HomeScreen({super.key});
 
