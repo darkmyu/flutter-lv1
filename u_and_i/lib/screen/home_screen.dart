@@ -13,19 +13,41 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.pink[100],
       body: SafeArea(
+        bottom: false,
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: Column(
+          child: const Column(
             children: [
-              const Text(
-                'U&I',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'parisienne',
-                  fontSize: 80.0,
-                ),
-              ),
-              const Text(
+              _TopPart(),
+              _BottomPart(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopPart extends StatelessWidget {
+  const _TopPart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          const Text(
+            'U&I',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'parisienne',
+              fontSize: 80.0,
+            ),
+          ),
+          const Column(
+            children: [
+              Text(
                 '우리 처음 만난날',
                 style: TextStyle(
                   color: Colors.white,
@@ -33,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 30.0,
                 ),
               ),
-              const Text(
+              Text(
                 '2021.12.27',
                 style: TextStyle(
                   color: Colors.white,
@@ -41,25 +63,38 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 20.0,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.favorite,
-                ),
-              ),
-              const Text(
-                'D+1',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'sunflower',
-                  fontSize: 50.0,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
             ],
           ),
-        ),
+          IconButton(
+            iconSize: 60.0,
+            onPressed: () {},
+            icon: const Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
+          ),
+          const Text(
+            'D+1',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'sunflower',
+              fontSize: 50.0,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class _BottomPart extends StatelessWidget {
+  const _BottomPart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Image.asset('asset/img/middle_image.png'),
     );
   }
 }
