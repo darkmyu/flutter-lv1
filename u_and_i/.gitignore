@@ -1,3 +1,6 @@
+# assets
+/asset/
+
 # Miscellaneous
 *.class
 *.log
