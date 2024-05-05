@@ -21,23 +21,31 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Calendar(
-              selectedDay: selectedDay,
               focusedDay: focusedDay,
               onDaySelected: onDaySelected,
+              selectedDayPredicate: selectedDayPredicate,
             ),
-            const SizedBox(height: 8.0),
             TodayBanner(
               selectedDay: selectedDay,
-              scheduleCount: 3,
+              taskCount: 0,
             ),
-            const SizedBox(height: 8.0),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: ScheduleCard(
-                startTime: 12,
-                endTime: 14,
-                content: '프로그래밍 공부하기.',
-                color: Colors.red,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 16.0,
+                ),
+                child: ListView(
+                  children: const [
+                    ScheduleCard(
+                      startTime: 12,
+                      endTime: 14,
+                      content: '프로그래밍 공부하기.',
+                      color: Colors.red,
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -46,10 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  onDaySelected(selectedDay, focusedDay) {
+  void onDaySelected(selectedDay, focusedDay) {
     setState(() {
       this.selectedDay = selectedDay;
       this.focusedDay = selectedDay;
     });
+  }
+
+  bool selectedDayPredicate(DateTime date) {
+    return date.isAtSameMomentAs(selectedDay);
   }
 }

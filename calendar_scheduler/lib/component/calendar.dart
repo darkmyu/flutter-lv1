@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatelessWidget {
-  final DateTime selectedDay;
   final DateTime focusedDay;
   final OnDaySelected onDaySelected;
+  final bool Function(DateTime day) selectedDayPredicate;
 
   const Calendar({
-    required this.selectedDay,
     required this.focusedDay,
     required this.onDaySelected,
+    required this.selectedDayPredicate,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final defaultBoxDeco = BoxDecoration(
+    final defaultBoxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(6.0),
-      color: Colors.grey[200],
+      border: Border.all(
+        color: Colors.grey[200]!,
+        width: 1.0,
+      ),
     );
 
     final defaultTextStyle = TextStyle(
@@ -40,19 +43,22 @@ class Calendar extends StatelessWidget {
         ),
       ),
       calendarStyle: CalendarStyle(
-        isTodayHighlighted: false,
-        defaultDecoration: defaultBoxDeco,
-        weekendDecoration: defaultBoxDeco,
-        selectedDecoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6.0),
+        isTodayHighlighted: true,
+        defaultDecoration: defaultBoxDecoration,
+        weekendDecoration: defaultBoxDecoration,
+        selectedDecoration: defaultBoxDecoration.copyWith(
           border: Border.all(
             color: primaryColor,
             width: 1.0,
           ),
         ),
-        outsideDecoration: const BoxDecoration(
-          shape: BoxShape.rectangle,
+        todayDecoration: defaultBoxDecoration.copyWith(
+          color: primaryColor,
+        ),
+        outsideDecoration: defaultBoxDecoration.copyWith(
+          border: Border.all(
+            color: Colors.transparent,
+          ),
         ),
         defaultTextStyle: defaultTextStyle,
         weekendTextStyle: defaultTextStyle,
@@ -61,11 +67,7 @@ class Calendar extends StatelessWidget {
         ),
       ),
       onDaySelected: onDaySelected,
-      selectedDayPredicate: (date) {
-        return date.year == selectedDay.year &&
-            date.month == selectedDay.month &&
-            date.day == selectedDay.day;
-      },
+      selectedDayPredicate: selectedDayPredicate,
     );
   }
 }

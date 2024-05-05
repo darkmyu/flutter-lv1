@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 class TodayBanner extends StatelessWidget {
   final DateTime selectedDay;
-  final int scheduleCount;
+  final int taskCount;
 
   const TodayBanner({
     required this.selectedDay,
-    required this.scheduleCount,
+    required this.taskCount,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     const textStyle = TextStyle(
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w700,
       color: Colors.white,
     );
 
@@ -30,7 +30,7 @@ class TodayBanner extends StatelessWidget {
               style: textStyle,
             ),
             Text(
-              '$scheduleCount개',
+              '$taskCount개',
               style: textStyle,
             ),
           ],
