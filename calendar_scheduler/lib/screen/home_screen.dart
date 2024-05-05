@@ -46,6 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
+                      Expanded(
+                        child: CustomTextField(
+                          label: '내용',
+                          expand: true,
+                        ),
+                      ),
                     ],
                   ),
                 ),
