@@ -75,24 +75,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: 16.0,
                   top: 16.0,
                 ),
-                child: ListView(
-                  children: schedules.containsKey(selectedDay)
-                      ? schedules[selectedDay]!
-                          .map(
-                            (e) => ScheduleCard(
-                              startTime: e.startTime,
-                              endTime: e.endTime,
-                              content: e.content,
-                              color: Color(
-                                int.parse(
-                                  'FF${e.color}',
-                                  radix: 16,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList()
-                      : [],
+                child: ListView.separated(
+                  itemCount: schedules.containsKey(selectedDay)
+                      ? schedules[selectedDay]!.length
+                      : 0,
+                  itemBuilder: (context, index) {
+                    final selectedSchedules = schedules[selectedDay]!;
+                    final scheduleModel = selectedSchedules[index];
+
+                    return ScheduleCard(
+                      startTime: scheduleModel.startTime,
+                      endTime: scheduleModel.endTime,
+                      content: scheduleModel.content,
+                      color: Color(
+                        int.parse(
+                          'FF${scheduleModel.color}',
+                          radix: 16,
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (content, index) {
+                    return const SizedBox(
+                      height: 8.0,
+                    );
+                  },
                 ),
               ),
             ),
