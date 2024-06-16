@@ -22,7 +22,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
           child: Column(
             children: [
-              const _Time(),
+              _Time(),
               const SizedBox(height: 8.0),
               const _Content(),
               const SizedBox(height: 8.0),
@@ -45,24 +45,51 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
 }
 
 class _Time extends StatelessWidget {
-  const _Time({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey();
+
+  _Time({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Expanded(
-          child: CustomTextField(
-            label: '시작 시간',
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  label: '시작 시간',
+                  onSaved: (value) {},
+                  validator: (value) {
+                    print('시작 시간 validate');
+                    return '시작 시간 오류';
+                  },
+                ),
+              ),
+              SizedBox(width: 16.0),
+              Expanded(
+                child: CustomTextField(
+                  label: '마감 시간',
+                  onSaved: (value) {},
+                  validator: (value) {
+                    print('마감 시간 validate');
+                    return '마감 시간 오류';
+                  },
+                ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(width: 16.0),
-        Expanded(
-          child: CustomTextField(
-            label: '마감 시간',
+          ElevatedButton(
+            onPressed: () {
+              // formKey.currentState!.save();
+              final validated = formKey.currentState!.validate();
+              print(validated);
+            },
+            child: Text('save'),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -72,10 +99,12 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
+    return Expanded(
       child: CustomTextField(
         label: '내용',
         expand: true,
+        onSaved: (value) {},
+        validator: (value) {},
       ),
     );
   }
