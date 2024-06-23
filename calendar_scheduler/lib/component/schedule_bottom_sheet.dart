@@ -71,7 +71,23 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     startTime = int.parse(value);
   }
 
-  String? onStartTimeValidate(String? value) {}
+  String? onStartTimeValidate(String? value) {
+    if (value == null) {
+      return '값을 입력해 주세요!';
+    }
+
+    if (int.tryParse(value) == null) {
+      return '숫자를 입력해 주세요!';
+    }
+
+    final time = int.parse(value);
+
+    if (time > 24 || time < 0) {
+      return '0과 24 사이의 숫자를 입력해 주세요!';
+    }
+
+    return null;
+  }
 
   void onEndTimeSaved(String? value) {
     if (value == null) {
@@ -81,7 +97,23 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     endTime = int.parse(value);
   }
 
-  String? onEndTimeValidate(String? value) {}
+  String? onEndTimeValidate(String? value) {
+    if (value == null) {
+      return '값을 입력해 주세요!';
+    }
+
+    if (int.tryParse(value) == null) {
+      return '숫자를 입력해 주세요!';
+    }
+
+    final time = int.parse(value);
+
+    if (time > 24 || time < 0) {
+      return '0과 24 사이의 숫자를 입력해 주세요!';
+    }
+
+    return null;
+  }
 
   void onContentSaved(String? value) {
     if (value == null) {
@@ -91,15 +123,29 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     content = value;
   }
 
-  String? onContentValidate(String? value) {}
+  String? onContentValidate(String? value) {
+    if (value == null) {
+      return '내용을 입력해 주세요!';
+    }
+
+    if (value.length < 5) {
+      return '5자 이상을 입력해 주세요!';
+    }
+
+    return null;
+  }
 
   void onSavePressed() {
-    formKey.currentState!.save();
+    final isValid = formKey.currentState!.validate();
 
-    print(startTime);
-    print(endTime);
-    print(content);
-    print(category);
+    if (isValid) {
+      formKey.currentState!.save();
+
+      print(startTime);
+      print(endTime);
+      print(content);
+      print(category);
+    }
   }
 }
 
