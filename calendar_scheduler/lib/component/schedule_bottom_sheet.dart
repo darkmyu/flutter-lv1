@@ -20,84 +20,103 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
-          child: Column(
-            children: [
-              _Time(),
-              const SizedBox(height: 8.0),
-              const _Content(),
-              const SizedBox(height: 8.0),
-              _Categories(
-                selectedColor: selectedColor,
-                onTap: (color) {
-                  setState(() {
-                    selectedColor = color;
-                  });
-                },
-              ),
-              const SizedBox(height: 8.0),
-              const _SaveButton(),
-            ],
+          child: Form(
+            child: Column(
+              children: [
+                _Time(
+                  onStartSaved: onStartTimeSaved,
+                  onStartValidate: onStartTimeValidate,
+                  onEndSaved: onEndTimeSaved,
+                  onEndValidate: onEndTimeValidate,
+                ),
+                const SizedBox(height: 8.0),
+                _Content(
+                  onSaved: onContentSaved,
+                  onValidate: onContentValidate,
+                ),
+                const SizedBox(height: 8.0),
+                _Categories(
+                  selectedColor: selectedColor,
+                  onTap: (color) {
+                    setState(() {
+                      selectedColor = color;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8.0),
+                const _SaveButton(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  void onStartTimeSaved(String? value) {}
+
+  String? onStartTimeValidate(String? value) {}
+
+  void onEndTimeSaved(String? value) {}
+
+  String? onEndTimeValidate(String? value) {}
+
+  void onContentSaved(String? value) {}
+
+  String? onContentValidate(String? value) {}
 }
 
 class _Time extends StatelessWidget {
-  final GlobalKey<FormState> formKey = GlobalKey();
+  final FormFieldSetter<String> onStartSaved;
+  final FormFieldSetter<String> onEndSaved;
+  final FormFieldValidator<String> onStartValidate;
+  final FormFieldValidator<String> onEndValidate;
 
-  _Time({super.key});
+  _Time({
+    super.key,
+    required this.onStartSaved,
+    required this.onEndSaved,
+    required this.onStartValidate,
+    required this.onEndValidate,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: CustomTextField(
-                  label: '시작 시간',
-                  onSaved: (value) {
-                    print('시작 시간 onSaved $value');
-                  },
-                  validator: (value) {
-                    print('시작 시간 validate');
-                    return '시작 시간 오류';
-                  },
-                ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                label: '시작 시간',
+                onSaved: onStartSaved,
+                validator: onStartValidate,
               ),
-              SizedBox(width: 16.0),
-              Expanded(
-                child: CustomTextField(
-                  label: '마감 시간',
-                  onSaved: (value) {
-                    print('마감 시간 onSaved $value');
-                  },
-                  validator: (value) {
-                    print('마감 시간 validate');
-                    return '마감 시간 오류';
-                  },
-                ),
+            ),
+            SizedBox(width: 16.0),
+            Expanded(
+              child: CustomTextField(
+                label: '마감 시간',
+                onSaved: onEndSaved,
+                validator: onStartValidate,
               ),
-            ],
-          ),
-          ElevatedButton(
-            onPressed: () {
-              formKey.currentState!.save();
-            },
-            child: Text('save'),
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
 class _Content extends StatelessWidget {
-  const _Content({super.key});
+  final FormFieldSetter<String> onSaved;
+  final FormFieldValidator<String> onValidate;
+
+  const _Content({
+    super.key,
+    required this.onSaved,
+    required this.onValidate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +124,8 @@ class _Content extends StatelessWidget {
       child: CustomTextField(
         label: '내용',
         expand: true,
-        onSaved: (value) {},
-        validator: (value) {},
+        onSaved: onSaved,
+        validator: onValidate,
       ),
     );
   }
@@ -119,9 +138,9 @@ class _Categories extends StatelessWidget {
   final OnColorSelected onTap;
 
   const _Categories({
+    super.key,
     required this.selectedColor,
     required this.onTap,
-    super.key,
   });
 
   @override
