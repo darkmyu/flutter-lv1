@@ -1,9 +1,15 @@
 import 'package:calendar_scheduler/component/custom_text_field.dart';
 import 'package:calendar_scheduler/constant/colors.dart';
+import 'package:calendar_scheduler/model/schedule.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleBottomSheet extends StatefulWidget {
-  const ScheduleBottomSheet({super.key});
+  final DateTime selectedDay;
+
+  const ScheduleBottomSheet({
+    super.key,
+    required this.selectedDay,
+  });
 
   @override
   State<ScheduleBottomSheet> createState() => _ScheduleBottomSheetState();
@@ -15,7 +21,6 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
   int? startTime;
   int? endTime;
   String? content;
-  String? category;
 
   String selectedColor = categoryColors.first;
 
@@ -141,10 +146,19 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     if (isValid) {
       formKey.currentState!.save();
 
-      print(startTime);
-      print(endTime);
-      print(content);
-      print(category);
+      final schedule = Schedule(
+        id: 999,
+        startTime: startTime!,
+        endTime: endTime!,
+        content: content!,
+        color: selectedColor,
+        date: widget.selectedDay,
+        createdAt: DateTime.now().toUtc(),
+      );
+
+      Navigator.of(context).pop(
+        schedule,
+      );
     }
   }
 }
