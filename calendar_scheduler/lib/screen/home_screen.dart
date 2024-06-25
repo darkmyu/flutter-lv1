@@ -17,35 +17,35 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDay = DateTime.now().toUtc();
   DateTime focusedDay = DateTime.now().toUtc();
 
-  Map<DateTime, List<Schedule>> schedules = {
-    DateTime.utc(2024, 6, 9): [
-      Schedule(
-        id: 1,
-        startTime: 11,
-        endTime: 12,
-        content: 'Flutter Study',
-        date: DateTime.utc(2024, 6, 9),
-        color: categoryColors[0],
-        createdAt: DateTime.now().toUtc(),
-      ),
-      Schedule(
-        id: 2,
-        startTime: 14,
-        endTime: 16,
-        content: 'NestJS Study',
-        date: DateTime.utc(2024, 6, 9),
-        color: categoryColors[3],
-        createdAt: DateTime.now().toUtc(),
-      ),
-    ],
-  };
+  // Map<DateTime, List<ScheduleTable>> schedules = {
+  //   DateTime.utc(2024, 6, 9): [
+  //     ScheduleTable(
+  //       id: 1,
+  //       startTime: 11,
+  //       endTime: 12,
+  //       content: 'Flutter Study',
+  //       date: DateTime.utc(2024, 6, 9),
+  //       color: categoryColors[0],
+  //       createdAt: DateTime.now().toUtc(),
+  //     ),
+  //     ScheduleTable(
+  //       id: 2,
+  //       startTime: 14,
+  //       endTime: 16,
+  //       content: 'NestJS Study',
+  //       date: DateTime.utc(2024, 6, 9),
+  //       color: categoryColors[3],
+  //       createdAt: DateTime.now().toUtc(),
+  //     ),
+  //   ],
+  // };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final schedule = await showModalBottomSheet<Schedule>(
+          final schedule = await showModalBottomSheet<ScheduleTable>(
             context: context,
             builder: (_) => ScheduleBottomSheet(
               selectedDay: selectedDay,
@@ -54,16 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
           if (schedule == null) return;
 
-          setState(() {
-            schedules = {
-              ...schedules,
-              schedule.date: [
-                if (schedules.containsKey(schedule.date))
-                  ...schedules[schedule.date]!,
-                schedule,
-              ],
-            };
-          });
+          // setState(() {
+          //   schedules = {
+          //     ...schedules,
+          //     schedule.date: [
+          //       if (schedules.containsKey(schedule.date))
+          //         ...schedules[schedule.date]!,
+          //       schedule,
+          //     ],
+          //   };
+          // });
         },
         backgroundColor: primaryColor,
         child: const Icon(
@@ -91,20 +91,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   top: 16.0,
                 ),
                 child: ListView.separated(
-                  itemCount: schedules.containsKey(selectedDay)
-                      ? schedules[selectedDay]!.length
-                      : 0,
+                  itemCount: 0,
                   itemBuilder: (context, index) {
-                    final selectedSchedules = schedules[selectedDay]!;
-                    final scheduleModel = selectedSchedules[index];
+                    // final selectedSchedules = schedules[selectedDay]!;
+                    // final scheduleModel = selectedSchedules[index];
 
                     return ScheduleCard(
-                      startTime: scheduleModel.startTime,
-                      endTime: scheduleModel.endTime,
-                      content: scheduleModel.content,
+                      startTime: 12,
+                      endTime: 14,
+                      content: 'test',
                       color: Color(
                         int.parse(
-                          'FF${scheduleModel.color}',
+                          'FF000000',
                           radix: 16,
                         ),
                       ),
