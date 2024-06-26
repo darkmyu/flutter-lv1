@@ -20,6 +20,11 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  Future<List<ScheduleTableData>> getSchedules() => select(scheduleTable).get();
+
+  Future<int> createSchedule(ScheduleTableCompanion data) =>
+      into(scheduleTable).insert(data);
 }
 
 LazyDatabase _openConnection() {
