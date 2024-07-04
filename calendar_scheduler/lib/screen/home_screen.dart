@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final schedule = await showModalBottomSheet<ScheduleTable>(
+          await showModalBottomSheet<ScheduleTable>(
             context: context,
             builder: (_) => ScheduleBottomSheet(
               selectedDay: selectedDay,
@@ -55,17 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
 
           setState(() {});
-
-          // setState(() {
-          //   schedules = {
-          //     ...schedules,
-          //     schedule.date: [
-          //       if (schedules.containsKey(schedule.date))
-          //         ...schedules[schedule.date]!,
-          //       schedule,
-          //     ],
-          //   };
-          // });
         },
         backgroundColor: primaryColor,
         child: const Icon(
@@ -93,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   top: 16.0,
                 ),
                 child: FutureBuilder<List<ScheduleTableData>>(
-                  future: GetIt.I<AppDatabase>().getSchedules(),
+                  future: GetIt.I<AppDatabase>().getSchedules(selectedDay),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
@@ -112,17 +101,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     final schedules = snapshot.data!;
 
-                    final selectedSchedules = schedules
-                        .where((e) => e.date.isAtSameMomentAs(selectedDay))
-                        .toList();
-
                     return ListView.separated(
-                      itemCount: selectedSchedules.length,
+                      itemCount: schedules.length,
                       itemBuilder: (context, index) {
                         // final selectedSchedules = schedules[selectedDay]!;
                         // final scheduleModel = selectedSchedules[index];
 
-                        final schedule = selectedSchedules[index];
+                        final schedule = schedules[index];
 
                         return ScheduleCard(
                           startTime: schedule.startTime,
