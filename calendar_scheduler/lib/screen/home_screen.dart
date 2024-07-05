@@ -19,29 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDay = DateTime.now().toUtc();
   DateTime focusedDay = DateTime.now().toUtc();
 
-  // Map<DateTime, List<ScheduleTable>> schedules = {
-  //   DateTime.utc(2024, 6, 9): [
-  //     ScheduleTable(
-  //       id: 1,
-  //       startTime: 11,
-  //       endTime: 12,
-  //       content: 'Flutter Study',
-  //       date: DateTime.utc(2024, 6, 9),
-  //       color: categoryColors[0],
-  //       createdAt: DateTime.now().toUtc(),
-  //     ),
-  //     ScheduleTable(
-  //       id: 2,
-  //       startTime: 14,
-  //       endTime: 16,
-  //       content: 'NestJS Study',
-  //       date: DateTime.utc(2024, 6, 9),
-  //       color: categoryColors[3],
-  //       createdAt: DateTime.now().toUtc(),
-  //     ),
-  //   ],
-  // };
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,14 +86,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         final schedule = schedules[index];
 
-                        return ScheduleCard(
-                          startTime: schedule.startTime,
-                          endTime: schedule.endTime,
-                          content: schedule.content,
-                          color: Color(
-                            int.parse(
-                              'FF${schedule.color}',
-                              radix: 16,
+                        return Dismissible(
+                          key: ObjectKey(schedule.id),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (direction) {},
+                          child: ScheduleCard(
+                            startTime: schedule.startTime,
+                            endTime: schedule.endTime,
+                            content: schedule.content,
+                            color: Color(
+                              int.parse(
+                                'FF${schedule.color}',
+                                radix: 16,
+                              ),
                             ),
                           ),
                         );
