@@ -26,6 +26,9 @@ class AppDatabase extends _$AppDatabase {
 
   Future<int> createSchedule(ScheduleTableCompanion data) =>
       into(scheduleTable).insert(data);
+
+  Future<int> removeSchedule(int id) =>
+      (delete(scheduleTable)..where((table) => table.id.equals(id))).go();
 }
 
 LazyDatabase _openConnection() {
