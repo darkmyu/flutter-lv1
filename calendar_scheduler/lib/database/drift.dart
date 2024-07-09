@@ -21,6 +21,14 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  Future<ScheduleTableData> getScheduleById(int id) =>
+      (select(scheduleTable)..where((table) => table.id.equals(id)))
+          .getSingle();
+
+  Future<int> updateScheduleById(int id, ScheduleTableCompanion data) =>
+      (update(scheduleTable)..where((table) => table.id.equals(id)))
+          .write(data);
+
   Future<List<ScheduleTableData>> getSchedules(DateTime date) =>
       (select(scheduleTable)..where((table) => table.date.equals(date))).get();
 
