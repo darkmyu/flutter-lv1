@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calendar_scheduler/model/category.dart';
 import 'package:calendar_scheduler/model/schedule.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -13,7 +14,10 @@ part 'drift.g.dart';
 // > dart run build_runner build
 
 @DriftDatabase(
-  tables: [ScheduleTable],
+  tables: [
+    ScheduleTable,
+    CategoryTable,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

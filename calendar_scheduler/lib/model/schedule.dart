@@ -1,3 +1,4 @@
+import 'package:calendar_scheduler/model/category.dart';
 import 'package:drift/drift.dart';
 
 class ScheduleTable extends Table {
@@ -11,7 +12,7 @@ class ScheduleTable extends Table {
 
   DateTimeColumn get date => dateTime()();
 
-  TextColumn get color => text()();
+  IntColumn get colorId => integer().references(CategoryTable, #id)();
 
   DateTimeColumn get createdAt =>
       dateTime().clientDefault(() => DateTime.now().toUtc())();
