@@ -40,7 +40,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       final response = await GetIt.I<AppDatabase>().getScheduleById(widget.id!);
 
       setState(() {
-        selectedColor = response.color;
+        selectedColor = response.categoryTable.color;
       });
     }
   }
@@ -58,7 +58,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
           );
         }
 
-        final data = snapshot.data;
+        final data = snapshot.data?.scheduleTable;
 
         return Container(
           color: Colors.white,
