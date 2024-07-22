@@ -26,7 +26,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
   int? endTime;
   String? content;
 
-  String selectedColor = categoryColors.first;
+  int? selectedColorId;
 
   @override
   void initState() {
@@ -40,13 +40,23 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       final response = await GetIt.I<AppDatabase>().getScheduleById(widget.id!);
 
       setState(() {
-        selectedColor = response.categoryTable.color;
+        selectedColorId = response.categoryTable.id;
+      });
+    } else {
+      final response = await GetIt.I<AppDatabase>().getCategories();
+
+      setState(() {
+        selectedColorId = response.first.id;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (selectedColorId == null) {
+      return Container();
+    }
+
     return FutureBuilder(
       future: widget.id != null
           ? GetIt.I<AppDatabase>().getScheduleById(widget.id!)
@@ -90,10 +100,10 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                     ),
                     const SizedBox(height: 8.0),
                     _Categories(
-                      selectedColor: selectedColor,
-                      onTap: (color) {
+                      selectedColorId: selectedColorId!,
+                      onTap: (colorId) {
                         setState(() {
-                          selectedColor = color;
+                          selectedColorId = colorId;
                         });
                       },
                     ),
@@ -197,7 +207,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
             startTime: Value(startTime!),
             endTime: Value(endTime!),
             content: Value(content!),
-            color: Value(selectedColor),
+            colorId: Value(selectedColorId!),
             date: Value(widget.selectedDay),
           ),
         );
@@ -208,7 +218,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
             startTime: Value(startTime!),
             endTime: Value(endTime!),
             content: Value(content!),
-            color: Value(selectedColor),
+            colorId: Value(selectedColorId!),
             date: Value(widget.selectedDay),
           ),
         );
@@ -293,51 +303,59 @@ class _Content extends StatelessWidget {
   }
 }
 
-typedef OnColorSelected = void Function(String color);
+typedef OnColorSelected = void Function(int colorId);
 
 class _Categories extends StatelessWidget {
-  final String selectedColor;
+  final int selectedColorId;
   final OnColorSelected onTap;
 
   const _Categories({
     super.key,
-    required this.selectedColor,
+    required this.selectedColorId,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: categoryColors
-          .map(
-            (e) => Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: GestureDetector(
-                onTap: () => onTap(e),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(
-                      int.parse(
-                        'FF$e',
-                        radix: 16,
+    return FutureBuilder(
+        future: GetIt.I<AppDatabase>().getCategories(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          return Row(
+            children: snapshot.data!
+                .map(
+                  (e) => Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: GestureDetector(
+                      onTap: () => onTap(e.id),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              'FF${e.color}',
+                              radix: 16,
+                            ),
+                          ),
+                          border: e.id == selectedColorId
+                              ? Border.all(
+                                  color: Colors.black,
+                                  width: 4.0,
+                                )
+                              : null,
+                          shape: BoxShape.circle,
+                        ),
+                        width: 32.0,
+                        height: 32.0,
                       ),
                     ),
-                    border: e == selectedColor
-                        ? Border.all(
-                            color: Colors.black,
-                            width: 4.0,
-                          )
-                        : null,
-                    shape: BoxShape.circle,
                   ),
-                  width: 32.0,
-                  height: 32.0,
-                ),
-              ),
-            ),
-          )
-          .toList(),
-    );
+                )
+                .toList(),
+          );
+        });
   }
 }
 

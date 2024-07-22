@@ -26,6 +26,12 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  Future<List<CategoryTableData>> getCategories() =>
+      select(categoryTable).get();
+
+  Future<int> createCategory(CategoryTableCompanion data) =>
+      into(categoryTable).insert(data);
+
   Future<ScheduleWithCategory> getScheduleById(int id) {
     final query = select(scheduleTable).join(
       [
