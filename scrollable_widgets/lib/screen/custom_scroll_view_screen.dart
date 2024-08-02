@@ -1,6 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:scrollable_widgets/const/colors.dart';
 
+class _SliverFixedHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final double minHeight;
+  final double maxHeight;
+
+  _SliverFixedHeaderDelegate({
+    required this.child,
+    required this.minHeight,
+    required this.maxHeight,
+  });
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(
+      child: child,
+    );
+  }
+
+  @override
+  double get maxExtent => maxHeight; // 최대 높이
+
+  @override
+  double get minExtent => minHeight; // 최소 높이
+
+  @override
+  // covariant - 상속된 클래스 타입도 허용
+  // oldDelegate - build 가 실행이 됐을 때 이전 delegate 의미
+  // this - 새로운 delegate
+  // shouldRebuild - 새로 build 여부를 결정
+  bool shouldRebuild(_SliverFixedHeaderDelegate oldDelegate) {
+    return oldDelegate.child != child ||
+        oldDelegate.minHeight != minHeight ||
+        oldDelegate.maxHeight != maxHeight;
+  }
+}
+
 class CustomScrollViewScreen extends StatelessWidget {
   final List<int> numbers = List.generate(100, (index) => index);
 
@@ -8,13 +45,40 @@ class CustomScrollViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          renderSliverAppBar(),
-          renderBuilderSliverList(),
-          renderSliverGridBuilder(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            renderSliverAppBar(),
+            renderHeader(),
+            renderBuilderSliverList(),
+            renderHeader(),
+            renderSliverGridBuilder(),
+            renderHeader(),
+            renderBuilderSliverList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliverPersistentHeader renderHeader() {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: _SliverFixedHeaderDelegate(
+        child: Container(
+          color: Colors.black,
+          child: const Center(
+            child: Text(
+              'Hello',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        minHeight: 50,
+        maxHeight: 100,
       ),
     );
   }
@@ -84,7 +148,7 @@ class CustomScrollViewScreen extends StatelessWidget {
             index: index,
           );
         },
-        childCount: 100,
+        childCount: 10,
       ),
     );
   }
