@@ -1,3 +1,7 @@
+import 'package:isar/isar.dart';
+
+part 'stat_model.g.dart';
+
 enum Region {
   daegu,
   chungnam,
@@ -85,10 +89,22 @@ enum ItemCode {
   }
 }
 
+@collection
 class StatModel {
+  Id id = Isar.autoIncrement;
+
+  @enumerated
+  @Index(unique: true, composite: [
+    CompositeIndex('itemCode'),
+    CompositeIndex('dateTime'),
+  ])
   final Region region;
+
   final double stat;
+
+  @enumerated
   final ItemCode itemCode;
+
   final DateTime dateTime;
 
   StatModel({
