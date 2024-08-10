@@ -5,9 +5,28 @@ import 'package:dusty_dust/const/colors.dart';
 import 'package:dusty_dust/model/stat_model.dart';
 import 'package:dusty_dust/repository/stat_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    StatRepository.fetchData(itemCode: ItemCode.PM10);
+    getCount();
+  }
+
+  getCount() async {
+    print(await GetIt.I<Isar>().statModels.count());
+  }
 
   @override
   Widget build(BuildContext context) {

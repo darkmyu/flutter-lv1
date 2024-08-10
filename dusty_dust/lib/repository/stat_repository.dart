@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dusty_dust/model/stat_model.dart';
+import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 
 class StatRepository {
   static Future<List<StatModel>> fetchData({
@@ -41,15 +43,27 @@ class StatRepository {
         final regionStr = key;
         final stat = item[regionStr];
 
-        stats = [
-          ...stats,
-          StatModel(
-            region: Region.values.firstWhere((e) => e.name == regionStr),
-            stat: double.parse(stat),
-            itemCode: itemCode,
-            dateTime: DateTime.parse(dateTime),
-          ),
-        ];
+        final statModel = StatModel()
+          ..region = Region.values.firstWhere((e) => e.name == regionStr)
+          ..stat = double.parse(stat)
+          ..itemCode = itemCode
+          ..dateTime = DateTime.parse(dateTime);
+
+        final isar = GetIt.I<Isar>();
+
+        await isar.writeTxn(() async {
+          await isar.statModels.put(statModel);
+        });
+
+        // stats = [
+        //   ...stats,
+        //   StatModel(
+        //     region: Region.values.firstWhere((e) => e.name == regionStr),
+        //     stat: double.parse(stat),
+        //     itemCode: itemCode,
+        //     dateTime: DateTime.parse(dateTime),
+        //   ),
+        // ];
       }
     }
 

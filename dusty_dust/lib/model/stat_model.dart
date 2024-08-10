@@ -98,19 +98,12 @@ class StatModel {
     CompositeIndex('itemCode'),
     CompositeIndex('dateTime'),
   ])
-  final Region region;
+  late Region region;
 
-  final double stat;
+  late double stat;
 
   @enumerated
-  final ItemCode itemCode;
+  late ItemCode itemCode;
 
-  final DateTime dateTime;
-
-  StatModel({
-    required this.region,
-    required this.stat,
-    required this.itemCode,
-    required this.dateTime,
-  });
+  late DateTime dateTime;
 }
