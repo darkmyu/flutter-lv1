@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    StatRepository.fetchData(itemCode: ItemCode.PM10);
+    StatRepository.fetchData();
     getCount();
   }
 
@@ -30,25 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: primaryColor,
       body: SingleChildScrollView(
-        child: FutureBuilder<List<StatModel>>(
-          future: StatRepository.fetchData(
-            itemCode: ItemCode.PM10,
-          ),
-          builder: (context, snapshot) {
-            print(snapshot.error);
-            print(snapshot.stackTrace);
-            print(snapshot.data);
-            return const Column(
-              children: [
-                MainStat(),
-                CategoryStat(),
-                HourlyStat(),
-              ],
-            );
-          },
+        child: Column(
+          children: [
+            MainStat(),
+            CategoryStat(),
+            HourlyStat(),
+          ],
         ),
       ),
     );
