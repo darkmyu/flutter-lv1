@@ -10,13 +10,13 @@ class StatusModel {
   final String imagePath;
   final String comment;
   final double minPM10;
-  final double minPM20;
+  final double minPM25;
   final double minO3;
   final double minNO2;
   final double minCO;
   final double minSO2;
 
-  StatusModel({
+  const StatusModel({
     required this.level,
     required this.label,
     required this.primaryColor,
@@ -26,7 +26,7 @@ class StatusModel {
     required this.imagePath,
     required this.comment,
     required this.minPM10,
-    required this.minPM20,
+    required this.minPM25,
     required this.minO3,
     required this.minNO2,
     required this.minCO,
