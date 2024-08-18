@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Region region = Region.seoul;
+
   @override
   void initState() {
     super.initState();
@@ -30,14 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: primaryColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            MainStat(),
-            CategoryStat(),
-            HourlyStat(),
+            MainStat(
+              region: region,
+            ),
+            const CategoryStat(),
+            const HourlyStat(),
           ],
         ),
       ),
