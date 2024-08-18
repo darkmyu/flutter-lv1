@@ -1,4 +1,3 @@
-import 'package:dusty_dust/const/colors.dart';
 import 'package:dusty_dust/model/stat_model.dart';
 import 'package:dusty_dust/utils/status_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,14 @@ import 'package:isar/isar.dart';
 
 class HourlyStat extends StatelessWidget {
   final Region region;
+  final Color darkColor;
+  final Color lightColor;
 
   const HourlyStat({
     super.key,
     required this.region,
+    required this.darkColor,
+    required this.lightColor,
   });
 
   @override
@@ -49,9 +52,9 @@ class HourlyStat extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Container(
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: darkColor,
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(16.0),
                                 topLeft: Radius.circular(16.0),
                               ),

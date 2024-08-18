@@ -1,4 +1,3 @@
-import 'package:dusty_dust/const/colors.dart';
 import 'package:dusty_dust/model/stat_model.dart';
 import 'package:dusty_dust/utils/status_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,14 @@ import 'package:isar/isar.dart';
 
 class CategoryStat extends StatelessWidget {
   final Region region;
+  final Color darkColor;
+  final Color lightColor;
 
   const CategoryStat({
     super.key,
     required this.region,
+    required this.darkColor,
+    required this.lightColor,
   });
 
   @override
@@ -34,9 +37,9 @@ class CategoryStat extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: darkColor,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(16.0),
                         topRight: Radius.circular(16.0),
                       ),
@@ -55,9 +58,9 @@ class CategoryStat extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: lightColor,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(16.0),
                           bottomRight: Radius.circular(16.0),
                         ),
