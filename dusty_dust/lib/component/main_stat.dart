@@ -1,6 +1,6 @@
-import 'package:dusty_dust/const/status_level.dart';
 import 'package:dusty_dust/model/stat_model.dart';
 import 'package:dusty_dust/utils/date_utils.dart';
+import 'package:dusty_dust/utils/status_utils.dart';
 import 'package:flutter/material.dart' hide DateUtils;
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
@@ -44,18 +44,9 @@ class MainStat extends StatelessWidget {
               }
 
               final statModel = snapshot.data!;
-
-              final index = statusLevels.indexWhere(
-                (e) => statModel.stat < e.minPM10,
+              final status = StatusUtils.getStatusModelFromStat(
+                statModel: statModel,
               );
-
-              if (index < 0) {
-                return const Center(
-                  child: Text('통계 수치에 에러가 있습니다.'),
-                );
-              }
-
-              final status = statusLevels[index - 1];
 
               return Column(
                 children: [
