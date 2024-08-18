@@ -40,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MainStat(
               region: region,
             ),
-            const CategoryStat(),
+            CategoryStat(
+              region: region,
+            ),
             const HourlyStat(),
           ],
         ),

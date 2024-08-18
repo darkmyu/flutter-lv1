@@ -1,8 +1,17 @@
 import 'package:dusty_dust/const/colors.dart';
+import 'package:dusty_dust/model/stat_model.dart';
+import 'package:dusty_dust/utils/status_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 
 class CategoryStat extends StatelessWidget {
-  const CategoryStat({super.key});
+  final Region region;
+
+  const CategoryStat({
+    super.key,
+    required this.region,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,25 +65,67 @@ class CategoryStat extends StatelessWidget {
                       child: ListView(
                         physics: const PageScrollPhysics(),
                         scrollDirection: Axis.horizontal,
-                        children: List.generate(
-                          6,
-                          (index) => SizedBox(
-                            width: constraint.maxWidth / 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('미세먼지'),
-                                const SizedBox(height: 8.0),
-                                Image.asset(
-                                  'asset/img/bad.png',
-                                  width: 50.0,
-                                ),
-                                const SizedBox(height: 8.0),
-                                const Text('46.0'),
-                              ],
-                            ),
-                          ),
-                        ),
+                        children: ItemCode.values
+                            .map(
+                              (itemCode) => FutureBuilder(
+                                future: GetIt.I<Isar>()
+                                    .statModels
+                                    .filter()
+                                    .regionEqualTo(region)
+                                    .itemCodeEqualTo(itemCode)
+                                    .sortByDateTimeDesc()
+                                    .findFirst(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Container();
+                                  }
+
+                                  final statModel = snapshot.data!;
+                                  final statusModel =
+                                      StatusUtils.getStatusModelFromStat(
+                                    statModel: statModel,
+                                  );
+
+                                  return SizedBox(
+                                    width: constraint.maxWidth / 3,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(itemCode.krName),
+                                        const SizedBox(height: 8.0),
+                                        Image.asset(
+                                          statusModel.imagePath,
+                                          width: 50.0,
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        Text(statModel.stat.toString()),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                        // List.generate(
+                        //   6,
+                        //   (index) => SizedBox(
+                        //     width: constraint.maxWidth / 3,
+                        //     child: Column(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         const Text('미세먼지'),
+                        //         const SizedBox(height: 8.0),
+                        //         Image.asset(
+                        //           'asset/img/bad.png',
+                        //           width: 50.0,
+                        //         ),
+                        //         const SizedBox(height: 8.0),
+                        //         const Text('46.0'),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                     ),
                   )
