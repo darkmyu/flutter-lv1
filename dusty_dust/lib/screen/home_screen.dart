@@ -53,6 +53,42 @@ class _HomeScreenState extends State<HomeScreen> {
           );
 
           return Scaffold(
+            drawer: Drawer(
+              backgroundColor: statusModel.darkColor,
+              child: ListView(
+                children: [
+                  const DrawerHeader(
+                    margin: EdgeInsets.zero,
+                    child: Text(
+                      '지역 선택',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  ...Region.values.map(
+                    (region) => ListTile(
+                      title: Text(region.krName),
+                      selected: region == this.region,
+                      tileColor: Colors.white,
+                      selectedColor: Colors.black,
+                      selectedTileColor: statusModel.lightColor,
+                      onTap: () {
+                        setState(() {
+                          this.region = region;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            appBar: AppBar(
+              backgroundColor: statusModel.primaryColor,
+              surfaceTintColor: statusModel.primaryColor,
+            ),
             backgroundColor: statusModel.primaryColor,
             body: SingleChildScrollView(
               child: Column(
