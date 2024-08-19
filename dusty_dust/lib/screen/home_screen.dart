@@ -17,17 +17,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Region region = Region.seoul;
+  bool isExpanded = true;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
     StatRepository.fetchData();
-    getCount();
-  }
 
-  getCount() async {
-    print(await GetIt.I<Isar>().statModels.count());
+    scrollController.addListener(() {
+      bool isExpanded = scrollController.offset < (500 - kToolbarHeight);
+
+      if (isExpanded != this.isExpanded) {
+        setState(() {
+          this.isExpanded = isExpanded;
+        });
+      }
+    });
   }
 
   @override
@@ -85,29 +92,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            appBar: AppBar(
-              backgroundColor: statusModel.primaryColor,
-              surfaceTintColor: statusModel.primaryColor,
-            ),
             backgroundColor: statusModel.primaryColor,
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  MainStat(
-                    region: region,
+            body: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                MainStat(
+                  region: region,
+                  primaryColor: statusModel.primaryColor,
+                  isExpanded: isExpanded,
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      CategoryStat(
+                        region: region,
+                        darkColor: statusModel.darkColor,
+                        lightColor: statusModel.lightColor,
+                      ),
+                      HourlyStat(
+                        region: region,
+                        darkColor: statusModel.darkColor,
+                        lightColor: statusModel.lightColor,
+                      ),
+                    ],
                   ),
-                  CategoryStat(
-                    region: region,
-                    darkColor: statusModel.darkColor,
-                    lightColor: statusModel.lightColor,
-                  ),
-                  HourlyStat(
-                    region: region,
-                    darkColor: statusModel.darkColor,
-                    lightColor: statusModel.lightColor,
-                  ),
-                ],
-              ),
+                )
+              ],
+              // Column(
+              //   children: [
+              //     MainStat(
+              //       region: region,
+              //     ),
+              //     CategoryStat(
+              //       region: region,
+              //       darkColor: statusModel.darkColor,
+              //       lightColor: statusModel.lightColor,
+              //     ),
+              //     HourlyStat(
+              //       region: region,
+              //       darkColor: statusModel.darkColor,
+              //       lightColor: statusModel.lightColor,
+              //     ),
+              //   ],
+              // ),
             ),
           );
         });
